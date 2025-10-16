@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI工具聚合平台 - 发现最佳人工智能服务</title>
+    <!-- 引入外部资源 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5', // 主色调：深紫色，代表科技与创新
+                        secondary: '#10B981', // 辅助色：绿色，用于强调和交互元素
+                        dark: '#1E293B',
+                        light: '#F8FAFC'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                },
+            }
+        }
+        const aiList = [
+            { id: 1, name: 'ChatGPT', url: 'https://chat.openai.com', imgUrl: 'https://picsum.photos/id/1/200/100', type: '国外AI助手' },
+            { id: 2, name: 'Claude', url: 'https://claude.ai', imgUrl: 'https://picsum.photos/id/2/200/100', type: '国外AI助手' },
+            { id: 3, name: 'Grok', url: 'https://grok.com/', imgUrl: 'https://picsum.photos/id/3/200/100', type: '国外AI助手' },
+            { id: 4, name: 'Gemini', url: 'https://gemini.google.com/', imgUrl: 'https://picsum.photos/id/4/200/100', type: '国外AI助手' },
+            { id: 5, name: 'Copilot', url: 'https://copilot.microsoft.com/', imgUrl: 'https://picsum.photos/id/5/200/100', type: '国外AI助手' },
+            { id: 6, name: '豆包', url: 'https://www.doubao.com/chat/', imgUrl: 'https://picsum.photos/id/6/200/100', type: '国内AI助手' },
+            { id: 7, name: 'DeepSeek', url: 'https://www.deepseek.com/', imgUrl: 'https://picsum.photos/id/8/200/100', type: '国内AI助手' },
+        ]
+    </script>
+
+    <!-- 自定义样式 -->
+    <style type="text/tailwindcss">
+        @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .card-hover {
+        @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+      }
+      .text-gradient {
+        @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary;
+      }
+      .backdrop-blur {
+        backdrop-filter: blur(8px);
+      }
+    }
+  </style>
+</head>
+
+<body
+    class="font-inter bg-gradient-to-br from-gray-50 to-gray-100 dark:from-dark dark:to-gray-900 text-gray-800 dark:text-gray-100 min-h-screen transition-colors duration-300">
+    <!-- 导航栏 -->
+    <header id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-white/80 dark:bg-dark/80 backdrop-blur">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="flex items-center space-x-2">
+                <div
+                    class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                    <i class="fa fa-bolt text-white text-xl"></i>
+                </div>
+                <span class="text-xl font-bold">AI<span class="text-primary">Hub</span></span>
+            </a>
+
+
+            <!-- 导航菜单 -->
+            <div class="flex items-center space-x-4">
+                <!-- 主题切换按钮 -->
+                <button id="theme-toggle"
+                    class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                    <i class="fa fa-moon-o dark:hidden"></i>
+                    <i class="fa fa-sun-o hidden dark:inline-block"></i>
+                </button>
+
+
+
+                <!-- 菜单按钮 - 移动端 -->
+                <button id="menu-toggle"
+                    class="md:hidden p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                    <i class="fa fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+
+        <!-- 移动端菜单 -->
+        <div id="mobile-menu" class="md:hidden hidden bg-white dark:bg-dark border-t dark:border-gray-800">
+            <div class="container mx-auto px-4 py-3 flex flex-col space-y-3">
+                <a href="#" class="py-2 hover:text-primary transition-colors">首页</a>
+                <a href="#" class="py-2 hover:text-primary transition-colors">分类</a>
+                <a href="#" class="py-2 hover:text-primary transition-colors">最新添加</a>
+                <a href="#" class="py-2 hover:text-primary transition-colors">关于我们</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="container mx-auto px-4 pt-28 pb-16">
+        <!-- 页面标题 -->
+        <div class="text-center mb-12">
+            <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold mb-4 leading-tight">
+                <span class="text-gradient">AI工具</span>集合
+            </h1>
+        </div>
+
+        <!-- 分类筛选 -->
+        <div class="mb-10 overflow-x-auto scrollbar-hide">
+            <div class="flex space-x-2 md:space-x-4 min-w-max pb-2">
+                <button data-id="0" class="category-btn active px-4 py-2 rounded-full bg-primary text-white">
+                    全部工具
+                </button>
+                <!-- <button data-id="1"
+                    class="category-btn px-4 py-2 rounded-full bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors">
+                    国外
+                </button>
+                <button data-id="2"
+                    class="category-btn px-4 py-2 rounded-full bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors">
+                    国内
+                </button> -->
+            </div>
+        </div>
+
+        <!-- AI工具卡片网格 -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+
+        </div>
+
+        <!-- 加载更多按钮 -->
+        <div class="mt-12 text-center">
+            <button id="load-more"
+                class="px-6 py-3 bg-white dark:bg-gray-800 rounded-full shadow hover:shadow-md transition-all border dark:border-gray-700 flex items-center mx-auto">
+                <span>加载更多</span>
+                <i class="fa fa-chevron-down ml-2"></i>
+            </button>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-white dark:bg-gray-800 border-t dark:border-gray-700 py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-2 mb-4 md:mb-0">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                        <i class="fa fa-bolt text-white text-sm"></i>
+                    </div>
+                    <span class="text-lg font-bold">AI<span class="text-primary">Hub</span></span>
+                </div>
+
+                <div class="flex space-x-4">
+                    <a href="https://github.com/dream0808/dream0808"
+                        class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
+                        <i class="fa fa-github"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="mt-6 text-center text-gray-500 dark:text-gray-500 text-sm">
+                &copy; 2025 AIHub. Design By Hpy
+            </div>
+        </div>
+    </footer>
+
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top"
+        class="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-primary text-white shadow-lg flex items-center justify-center opacity-0 invisible transition-all duration-300 hover:bg-primary/90">
+        <i class="fa fa-chevron-up"></i>
+    </button>
+
+    <!-- JavaScript -->
+    <script>
+        // 等待DOM加载完成
+        document.addEventListener('DOMContentLoaded', function () {
+            // 导航栏滚动效果
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', function () {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('py-2', 'shadow-md');
+                    navbar.classList.remove('py-3');
+                } else {
+                    navbar.classList.add('py-3');
+                    navbar.classList.remove('py-2', 'shadow-md');
+                }
+            });
+            const oDiv = document.querySelector('.grid-cols-1')
+            const strHTML = aiList.map((item) => {
+                return ` <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="block">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden card-hover">
+          <div class="h-36 bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center p-6">
+            <img src="${item.imgUrl}" alt="${item.name}" class="h-16 w-auto object-contain">
+          </div>
+          <div class="p-5">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="text-xl font-bold">${item.name}</h3>
+              <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs px-2 py-1 rounded-full">${item.type}</span>
+            </div>
+            <div class="flex items-center text-sm text-gray-500 dark:text-gray-500">
+              <i class="fa fa-external-link mr-1"></i>
+              <span>访问网站</span>
+            </div>
+          </div>
+        </div>
+      </a>`
+            })
+            oDiv.innerHTML = strHTML.join('')
+            // 移动端菜单切换
+            const menuToggle = document.getElementById('menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            menuToggle.addEventListener('click', function () {
+                mobileMenu.classList.toggle('hidden');
+                // 切换图标
+                const icon = menuToggle.querySelector('i');
+                if (icon.classList.contains('fa-bars')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+
+
+            // 主题切换
+            const themeToggle = document.getElementById('theme-toggle');
+
+            // 检查本地存储中的主题偏好
+            if (localStorage.getItem('theme') === 'dark' ||
+                (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+
+            themeToggle.addEventListener('click', function () {
+                document.documentElement.classList.toggle('dark');
+                // 保存主题偏好到本地存储
+                if (document.documentElement.classList.contains('dark')) {
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+
+            // 分类筛选按钮
+            const categoryBtns = document.querySelectorAll('.category-btn');
+            categoryBtns.forEach(btn => {
+                btn.addEventListener('click', function (e) {
+                    // console.log(e.target);
+                    
+                    // 移除所有按钮的活跃状态
+                    categoryBtns.forEach(b => {
+                        b.classList.remove('active', 'bg-primary', 'text-white');
+                        b.classList.add('bg-gray-200', 'dark:bg-gray-800', 'hover:bg-gray-300', 'dark:hover:bg-gray-700');
+                    });
+
+                    // 添加当前按钮的活跃状态
+                    this.classList.add('active', 'bg-primary', 'text-white');
+                    this.classList.remove('bg-gray-200', 'dark:bg-gray-800', 'hover:bg-gray-300', 'dark:hover:bg-gray-700');
+
+                    // 这里可以添加实际筛选逻辑
+                    // 模拟筛选动画效果
+                    const cards = document.querySelectorAll('.grid > a');
+                    cards.forEach((card, index) => {
+                        card.style.opacity = '0.5';
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                        }, 300 + (index * 50));
+                    });
+                });
+            });
+
+            // 返回顶部按钮
+            const backToTopBtn = document.getElementById('back-to-top');
+
+            window.addEventListener('scroll', function () {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.remove('opacity-0', 'invisible');
+                    backToTopBtn.classList.add('opacity-100', 'visible');
+                } else {
+                    backToTopBtn.classList.add('opacity-0', 'invisible');
+                    backToTopBtn.classList.remove('opacity-100', 'visible');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', function () {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // 加载更多按钮
+            const loadMoreBtn = document.getElementById('load-more');
+            let loading = false;
+
+            loadMoreBtn.addEventListener('click', function () {
+                if (loading) return;
+
+                loading = true;
+                const originalText = loadMoreBtn.innerHTML;
+                loadMoreBtn.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i> 加载中...';
+
+                // 模拟加载延迟
+                setTimeout(() => {
+                    loadMoreBtn.innerHTML = originalText;
+                    loading = false;
+
+                    // 这里可以添加实际加载更多内容的逻辑
+                    alert('已加载全部AI工具');
+                }, 1500);
+            });
+        });
+    </script>
+</body>
+
+</html>
